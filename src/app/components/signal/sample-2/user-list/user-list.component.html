@@ -1,0 +1,7 @@
+<input (input)="updateQuery($event)" placeholder="Start typing..." />
+<ul>
+  @for (user of filteredUsers(); track user.id) {
+  <li>{{ user.displayName }}</li>
+  }
+  <!-- <li *ngFor="let user of filteredUsers()">{{ user.displayName }}</li> -->
+</ul>

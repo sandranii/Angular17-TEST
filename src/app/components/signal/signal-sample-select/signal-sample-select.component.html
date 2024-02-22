@@ -1,0 +1,7 @@
+<select [formControl]="selectForm">
+  <option [value]="null">請選擇</option>
+  @for(item of sampleOption; track item.key) {
+  <option [value]="item.key">{{ item.value }}</option>
+  }
+</select>
+{{ selectForm.value }}
