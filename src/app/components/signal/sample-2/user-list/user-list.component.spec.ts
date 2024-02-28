@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserListComponent } from './user-list.component';
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { User } from '../../../../interfaces';
 import { By } from '@angular/platform-browser';
 
@@ -71,6 +71,27 @@ describe('UserListComponent', () => {
       '新添加的使用者應被正確渲染'
     );
   });
+
+  it('應當輸入框接收到輸入時調用updateQuery方法並傳遞正確的值', () => {
+    const fixture = TestBed.createComponent(TestHost); // 使用TestHost組件
+    fixture.detectChanges(); // 觸發變更檢測以應用初始的輸入值
+  
+    // 獲取UserListComponent實例
+    const userListComponentInstance = fixture.debugElement.query(By.directive(UserListComponent)).componentInstance;
+  
+    // 在模擬輸入之前設置spy
+    spyOn(userListComponentInstance, 'updateQuery').and.callThrough();
+  
+    // 模擬輸入事件
+    const inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
+    inputElement.value = 'Test';
+    inputElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges(); // 觸發變更檢測以響應輸入事件
+  
+    // 檢查updateQuery方法是否被調用
+    expect(userListComponentInstance.updateQuery).toHaveBeenCalled();
+  });
+  
 });
 
 // fixture.debugElement 測試畫面上的元素
