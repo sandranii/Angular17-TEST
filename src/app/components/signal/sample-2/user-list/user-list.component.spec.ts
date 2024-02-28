@@ -1,11 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
 import { UserListComponent } from './user-list.component';
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { User } from '../../../../interfaces';
 import { By } from '@angular/platform-browser';
 
 describe('UserListComponent', () => {
+  //父組件對子組件的資料傳遞
   @Component({
     imports: [UserListComponent],
     standalone: true,
@@ -15,7 +15,7 @@ describe('UserListComponent', () => {
     users: User[] = [];
   }
 
-  it(`應從輸入框渲染使用者`, () => {
+  it(`應透過signal input渲染使用者`, () => {
     //設定測試資料
     const testUser = {
       id: 1,
@@ -25,6 +25,9 @@ describe('UserListComponent', () => {
     };
     //創建測試組件實例
     const fixture = TestBed.createComponent(TestHost);
+
+    // //舊寫法，但signal input 是read-only的 不能夠直接從子層賦值，一定要從父層傳進來
+    // const fixture = TestBed.createComponent(UserListComponent);
 
     //傳遞測試資料
     fixture.componentInstance.users = [testUser];
