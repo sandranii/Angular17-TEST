@@ -27,6 +27,7 @@ export class SignalSampleSelectComponent {
   sampleOption = [
     { key: 1, value: 'counter' },
     { key: 2, value: 'search-user' },
+    { key: 3, value: 'call stocks api' },
   ];
 
   constructor() {

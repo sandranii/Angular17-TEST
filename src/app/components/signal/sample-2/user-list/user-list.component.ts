@@ -22,11 +22,23 @@ export class UserListComponent {
   userList = input.required<ModifiedUser[], User[]>({
     alias: 'users',
     transform: concatUserNames,
-  }); // signal的input是 read-only的
+  }); // signal的input是 read-only的，只是目前在developer preview，還是有可能會改變
+
+  // Required Input - does not have a initial value
+  counter = input.required<number>();
+  isEven = computed(()=> this.counter() % 2 === 0);
+
+  // Optional Input property with undefined as initial value 
+  counter1 = input<number>();
+      
+  // Optional Input property with initial value
+  counter2 = input(0);
+      
 
   constructor() {
     effect(() => {
       console.log('新的input值：', this.userList());
+
     });
   }
 

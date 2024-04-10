@@ -1,4 +1,4 @@
-import { Component, signal, computed, effect } from '@angular/core';
+import { Component, signal, computed, effect, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SignalSampleSelectComponent } from '../signal-sample-select/signal-sample-select.component';
 import { toObservable } from '@angular/core/rxjs-interop';

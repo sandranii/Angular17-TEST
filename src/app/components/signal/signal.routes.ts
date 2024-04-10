@@ -20,6 +20,13 @@ export const SIGNAL_ROUTES: Routes = [
             (x) => x.Sample2Component
           ),
       },
+      {
+        path: 'sample3',
+        loadComponent: () =>
+          import('./sample-3/sample-3.component').then(
+            (x) => x.Sample3Component
+          ),
+      },
     ],
   },
 ];
