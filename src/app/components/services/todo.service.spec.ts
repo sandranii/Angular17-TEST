@@ -33,38 +33,58 @@ describe('TodoService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('gets the to-dos', async () => {
-    // Arrange
-    const fetchSpy = jasmine.createSpy('fetch')
-      .and.returnValue(okResponse);
-    const todoService = new TodoService(fetchSpy);
+  //------------ createSpy ------------
 
+  // it('gets the to-dos', async () => {
+  //   // Arrange
+  //   const fetchSpy = jasmine.createSpy('fetch')
+  //     .and.returnValue(okResponse);
+  //   const todoService = new TodoService(fetchSpy);
+
+  //   // Act
+  //   const actualTodos = await todoService.getTodos();
+
+  //   // Assert
+  //   expect(actualTodos).toEqual(todos);
+  //   expect(fetchSpy).toHaveBeenCalledWith('/todos');
+
+  // })
+
+  // it('handles an Http error when getting the to-dos', async () => {
+  //   // Arrange
+  //   const fetchSpy = jasmine.createSpy('fetch')
+  //     .and.returnValue(errorResponse);
+  //   const todoService = new TodoService(fetchSpy);
+
+  //   // Act
+  //   let error;
+  //   try {
+  //     await todoService.getTodos();
+  //   } catch(e) {
+  //     error = e;
+  //   }
+
+  //   // Assert
+  //   expect(error).toEqual(new Error('HTTP error: 404 Not Found'));
+  //   expect(fetchSpy).toHaveBeenCalledWith('/todos');
+
+  // })
+
+  //------------ spyOn ------------
+  // spyOn方法的参数必须是(object,methodName);
+
+  it('get the to-dos', async () => {
+    // Arrange
+    spyOn(window, 'fetch')
+      .and.returnValue(Promise.resolve(okResponse)); //使用 Promise.resolve 包裝 Response 對象
+    const todoService = new TodoService();
+    
     // Act
     const actualTodos = await todoService.getTodos();
-
+    
     // Assert
     expect(actualTodos).toEqual(todos);
-    expect(fetchSpy).toHaveBeenCalledWith('/todos');
-
-  })
-
-  it('handles an Http error when getting the to-dos', async () => {
-    // Arrange
-    const fetchSpy = jasmine.createSpy('fetch')
-      .and.returnValue(errorResponse);
-    const todoService = new TodoService(fetchSpy);
-
-    // Act
-    let error;
-    try {
-      await todoService.getTodos();
-    } catch(e) {
-      error = e;
-    }
-
-    // Assert
-    expect(error).toEqual(new Error('HTTP error: 404 Not Found'));
-    expect(fetchSpy).toHaveBeenCalledWith('/todos');
+    expect(window.fetch).toHaveBeenCalledWith('/todos');
 
   })
 });
