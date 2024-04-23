@@ -27,15 +27,21 @@ describe('Sample3Component', () => {
 }];
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({ //TestBed 具有一個靜態方法 configureTestingModule，接受一個模組定義
       imports: [Sample3Component, HttpClientTestingModule], //導入HttpClientTestingModule
       providers: [StocksService]
     })
-    .compileComponents();
+    .compileComponents(); //compileComponents 是非同步編譯，將模板文件轉譯成JavaScript代碼。
     
-    fixture = TestBed.createComponent(Sample3Component);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture = TestBed.createComponent(Sample3Component); //1. createComponent 渲染正在測試的組件，2. ComponentFixture 包含了組件，並提供了一個方便的介面給組件實例和已渲染的 DOM
+    component = fixture.componentInstance; // 元件實例主要用於設置輸入和訂閱輸出
+    const { debugElement } = fixture; // DebugElement 包裹了原生的DOM元素。返回組件的宿主元素
+    const { nativeElement } = debugElement; //展開 DebugElement，訪問內部的原生DOM元素
+    // console.log('fixture', fixture);
+    // console.log('debugElement', debugElement);
+    // console.log('nativeElement', nativeElement);
+
+    fixture.detectChanges(); // 必須手動觸發變更檢測，允許以同步的方式測試非同步行為
 
     stocksService = TestBed.inject(StocksService);
   });
@@ -50,6 +56,7 @@ describe('Sample3Component', () => {
 
     // 和subscribe後的data去比較
     stocksService.getTaiwanStockInfo().subscribe(data => {
+
       expect(data).toEqual(fakeStockInfoData);
     })
 
@@ -59,15 +66,19 @@ describe('Sample3Component', () => {
 
   it('createSpy: 取得PER資料(TaiwanStockPER)', () => {
     // 創建 getTaiwanStockPER 方法的spy對象
-    const spy = jasmine.createSpy('getTaiwanStockPER').and.returnValue(of(fakeStockPERData));
+    const spy = jasmine.createSpy('getTaiwanStockPER123').and.returnValue((fakeStockPERData));
     // StocksService 服務中的 getTaiwanStockPER 方法替換為一個由 Jasmine createSpy 方法創建的間諜（spy）對象。
     // 在測試期間控制 getTaiwanStockPER 方法的行為，讓這個方法不會執行其原有的邏輯（例如發起真實的 HTTP 請求），而是返回一個我們預先定義的值，這裡是 of(fakeStockPERData)
-    stocksService.getTaiwanStockPER = spy;
+    // stocksService.getTaiwanStockPER = spy;
 
-    stocksService.getTaiwanStockPER().subscribe(data => {
-      expect(data).toEqual(fakeStockPERData);
-    })
-
+    // stocksService.getTaiwanStockPER().subscribe(data => {
+    //   expect(data).toEqual(fakeStockPERData);
+    // })
+    // spy();
+    // spy().subscribe((data:any) => {
+    //   expect(data).toEqual(fakeStockPERData);
+    // })
+    expect(spy()).toEqual((fakeStockPERData));
     // 檢查 getTaiwanStockPER 是否被調用
     expect(spy).toHaveBeenCalled();
   })
