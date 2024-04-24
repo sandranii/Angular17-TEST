@@ -1,7 +1,7 @@
 <div>
-  <button (click)="addUser()">Add Andy</button>
+  <button data-testid="add-button" (click)="addUser()">Add Andy</button>
 </div>
-<app-user-list [users]="users" [counter]="0"></app-user-list>
+<app-user-list data-testid="users" [users]="users" [counter]="0"></app-user-list>
 
 <h1>範例來源</h1>
 <ul>
