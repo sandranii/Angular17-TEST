@@ -1,6 +1,6 @@
 <h1>Signal 練習 - count</h1>
-<p>count: {{ count() }}</p>
+<p data-testid="count">count: {{ count() }}</p>
 <p>double: {{ double() }}</p>
-<button (click)="increase()">+</button>
+<button data-testid="increase-button" (click)="increase()">+</button>
 <button (click)="reset()">reset</button>
 <p>(source: https://blog.kevinyang.net/2023/03/11/angular-signals/)</p>

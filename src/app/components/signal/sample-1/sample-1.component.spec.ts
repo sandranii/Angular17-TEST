@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Sample1Component } from './sample-1.component';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 describe('Sample1Component', () => {
   let component: Sample1Component;
   let fixture: ComponentFixture<Sample1Component>;
+  let debugElement: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -13,6 +16,7 @@ describe('Sample1Component', () => {
 
     fixture = TestBed.createComponent(Sample1Component);
     component = fixture.componentInstance;
+    debugElement = fixture.debugElement;
     fixture.detectChanges();
   });
 
@@ -31,6 +35,20 @@ describe('Sample1Component', () => {
     const initCount = component.count();
     component.increase();
     expect(component.count()).toBe(initCount + 1);
+  });
+
+  it('1. debugElement： should increase count by 1', () => {
+    // Act
+    const increaseButton = debugElement.query(
+      By.css('[data-testid="increase-button"]')
+    );
+    increaseButton.triggerEventHandler('click', null);
+    fixture.detectChanges(); //手動觸發變更偵測
+    // Assert
+    const count = debugElement.query(
+      By.css('[data-testid="count"]')
+    );
+    expect(count.nativeElement.textContent).toBe('count: 1'); //DebugElement 沒有用於讀取文本內容的方法或屬性。需要訪問具有便利 textContent 屬性的原生DOM元素。
   });
 
   it('should double the count', () => {
