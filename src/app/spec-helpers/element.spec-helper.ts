@@ -2,7 +2,7 @@ import { DebugElement } from "@angular/core";
 import { ComponentFixture } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 
-export function fineEl<T>(
+export function findEl<T>(
     fixture: ComponentFixture<T>,
     testId: string
 ): DebugElement {
@@ -11,11 +11,18 @@ export function fineEl<T>(
     )
 }
 
+export function findComponent<T>(
+    fixture: ComponentFixture<T>,
+    selector: string
+): DebugElement {
+    return fixture.debugElement.query(By.css(selector));
+}
+
 export function click<T>(
     fixture: ComponentFixture<T>,
     testId: string
 ): void {
-    const element = fineEl(fixture, testId);
+    const element = findEl(fixture, testId);
     const event = makeClickEvent(element.nativeElement);
     element.triggerEventHandler('click', event);
 }
@@ -42,7 +49,7 @@ export function expectText<T>(
     testId: string,
     text: string
 ): void {
-    const element = fineEl(fixture, testId);
+    const element = findEl(fixture, testId);
     const actualText = element.nativeElement.textContent;
     expect(actualText).toBe(text);
 }

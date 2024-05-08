@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Sample1Component } from './sample-1.component';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { click, expectText, findEl } from '../../../spec-helpers/element.spec-helper';
 
 describe('Sample1Component', () => {
   let component: Sample1Component;
@@ -37,7 +38,7 @@ describe('Sample1Component', () => {
     expect(component.count()).toBe(initCount + 1);
   });
 
-  it('1. debugElement： should increase count by 1', () => {
+  it('1-1. debugElement： should increase count by 1', () => {
     // Act
     const increaseButton = debugElement.query(
       By.css('[data-testid="increase-button"]')
@@ -49,6 +50,15 @@ describe('Sample1Component', () => {
       By.css('[data-testid="count"]')
     );
     expect(count.nativeElement.textContent).toBe('count: 1'); //DebugElement 沒有用於讀取文本內容的方法或屬性。需要訪問具有便利 textContent 屬性的原生DOM元素。
+  });
+
+  // 利用testing helpers 簡化重複程式碼
+  it('1-2. [testing helpers] debugElement： should increase count by 1', () => {
+    // Act
+    click(fixture, 'increase-button');
+    fixture.detectChanges(); //手動觸發變更偵測
+    // Assert
+    expectText(fixture, 'count', 'count: 1');
   });
 
   it('should double the count', () => {

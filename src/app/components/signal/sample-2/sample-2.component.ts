@@ -47,6 +47,6 @@ export class Sample2Component {
       },
       ...this.users,
     ];
-    console.log('目前的Users：', this.users);
+    // console.log('目前的Users：', this.users);
   }
 }

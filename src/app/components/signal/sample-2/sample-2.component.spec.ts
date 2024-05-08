@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Sample2Component } from './sample-2.component';
-import { DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
+import { findComponent } from '../../../spec-helpers/element.spec-helper';
 
 describe('Sample2Component', () => {
   let component: Sample2Component;
@@ -42,4 +43,24 @@ describe('Sample2Component', () => {
     expect(firstListItem.textContent).toBe('Andy Bernard');
     expect(firstListItem.innerText).toBe('Andy Bernard');
   });
+ 
+  describe('independent UserList Component',() => {
+    // 檢查子組件存在
+    it('檢查子組件存在: renders an independent UserList Component', () => {
+      const userList = findComponent(fixture, 'app-user-list');
+      expect(userList).toBeTruthy();
+    })
+  
+    //檢查輸入
+    it('檢查輸入: passes a start count', () => {
+      const userList = findComponent(fixture, 'app-user-list');
+      console.log('userList', userList);
+      console.log('userList.properties', userList.properties);
+      console.log("userList.properties['counter']", userList.properties['counter']);
+      console.log("userList.properties['userList']", userList.properties['userList']);
+      console.log("userList.properties['users']", userList.properties['users']);
+      expect(userList.properties['counter']).toBe(5); //undefined
+    })
+  })
+
 });

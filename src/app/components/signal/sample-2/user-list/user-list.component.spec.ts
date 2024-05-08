@@ -9,7 +9,7 @@ describe('UserListComponent', () => {
   @Component({
     imports: [UserListComponent],
     standalone: true,
-    template: `<app-user-list [users]="users" />`,
+    template: `<app-user-list [users]="users" [counter]="5"/>`,
   })
   class TestHost {
     users: User[] = [];
