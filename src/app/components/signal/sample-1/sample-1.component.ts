@@ -1,6 +1,5 @@
 import { Component, signal, computed, effect, input, Input, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SignalSampleSelectComponent } from '../signal-sample-select/signal-sample-select.component';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
@@ -8,7 +7,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-sample-1',
   standalone: true,
-  imports: [CommonModule, SignalSampleSelectComponent],
+  imports: [CommonModule],
   templateUrl: './sample-1.component.html',
   styleUrl: './sample-1.component.scss',
 })
