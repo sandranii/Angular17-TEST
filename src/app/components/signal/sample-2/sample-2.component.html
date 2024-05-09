@@ -3,7 +3,9 @@
 </div>
 <app-user-list data-testid="users" [users]="users" [counter]="5"></app-user-list>
 
-<h1>範例來源</h1>
+<app-sample-1 [testCount]="5" (countChange)="handleCountChange($event)"></app-sample-1>
+
+<!-- <h1>範例來源</h1>
 <ul>
   <li><a href="https://www.youtube.com/watch?v=U8YXaWwyd9k" target="_blank">影片: https://www.youtube.com/watch?v=U8YXaWwyd9k</a></li>
   <li><a href="https://github.com/DMezhenskyi/angular-signal-inputs/tree/main/src/app" target="_blank">GitHub: https://github.com/DMezhenskyi/angular-signal-inputs/tree/main/src/app</a></li>
@@ -15,4 +17,4 @@
   <li><a href="https://blog.angular.io/signal-inputs-available-in-developer-preview-6a7ff1941823" target="_blank">https://blog.angular.io/signal-inputs-available-in-developer-preview-6a7ff1941823</a></li>
   <li><a href="https://chat.openai.com/share/6ec54161-03dc-4e6f-aba9-d1b52869bf60" target="_blank">https://chat.openai.com/share/6ec54161-03dc-4e6f-aba9-d1b52869bf60</a></li>
   <li><a href="https://angularexperts.io/blog/angular-signal-inputs" target="_blank">https://angularexperts.io/blog/angular-signal-inputs</a></li>
-</ul>
+</ul> -->

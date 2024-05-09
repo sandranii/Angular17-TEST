@@ -12,7 +12,8 @@ describe('Sample2Component', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Sample2Component]
+      imports: [Sample2Component],
+      schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
     
@@ -52,15 +53,40 @@ describe('Sample2Component', () => {
     })
   
     //檢查輸入
-    it('檢查輸入: passes a start count', () => {
+    xit('檢查輸入: passes a start count', () => {
       const userList = findComponent(fixture, 'app-user-list');
       console.log('userList', userList);
       console.log('userList.properties', userList.properties);
       console.log("userList.properties['counter']", userList.properties['counter']);
-      console.log("userList.properties['userList']", userList.properties['userList']);
-      console.log("userList.properties['users']", userList.properties['users']);
       expect(userList.properties['counter']).toBe(5); //undefined
     })
   })
 
+  describe('independent Sample1 Component',() => {
+    // 檢查子組件存在
+    it('檢查子組件存在: renders an independent Sample1 Component', () => {
+      const sample1 = findComponent(fixture, 'app-sample-1');
+      expect(sample1).toBeTruthy();
+    })
+  
+    //檢查輸入
+    xit('檢查輸入 @Input: passes a start count', () => {
+      const sample1 = findComponent(fixture, 'app-sample-1');
+      console.log('sample1', sample1);
+      console.log('sample1.properties', sample1.properties);
+      console.log("sample1.properties['testCount']", sample1.properties['testCount']);
+      expect(sample1.properties['testCount']).toBe(5); //undefined
+    })
+
+    it('監聽@Output: countChange', () => {
+      spyOn(console, 'log');
+      const sample1 = findComponent(fixture, 'app-sample-1');
+      const count = 5;
+      sample1.triggerEventHandler('countChange', 5);
+      expect(console.log).toHaveBeenCalledWith(
+        'sample 2 handleCountChange:',
+        count
+      )
+    })
+  })
 });

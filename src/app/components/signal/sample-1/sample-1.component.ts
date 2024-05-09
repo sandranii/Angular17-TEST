@@ -1,4 +1,4 @@
-import { Component, signal, computed, effect, input } from '@angular/core';
+import { Component, signal, computed, effect, input, Input, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SignalSampleSelectComponent } from '../signal-sample-select/signal-sample-select.component';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -13,12 +13,15 @@ import { BehaviorSubject } from 'rxjs';
   styleUrl: './sample-1.component.scss',
 })
 export class Sample1Component {
+  @Input() public testCount = 0;
+  @Output() public countChange = new EventEmitter<number>();
+
   count = signal(0);
   double = computed(() => this.count() * 2);
 
   constructor() {
     effect(() => {
-      console.log(this.count(), 'effect');
+      // console.log(this.count(), 'effect');
     });
   }
 
@@ -28,5 +31,7 @@ export class Sample1Component {
 
   increase() {
     this.count.update((c) => ++c);
+    this.testCount++;
+    this.countChange.emit(this.testCount);
   }
 }

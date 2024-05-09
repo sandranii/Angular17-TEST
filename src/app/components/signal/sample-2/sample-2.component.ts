@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { UserListComponent } from './user-list/user-list.component';
 import { User } from '../../../interfaces';
+import { Sample1Component } from '../sample-1/sample-1.component';
 
 @Component({
   selector: 'app-sample-2',
   standalone: true,
-  imports: [UserListComponent],
+  imports: [UserListComponent, Sample1Component],
   templateUrl: './sample-2.component.html',
   styleUrl: './sample-2.component.scss',
 })
@@ -48,5 +49,9 @@ export class Sample2Component {
       ...this.users,
     ];
     // console.log('目前的Users：', this.users);
+  }
+
+  public handleCountChange(count: number) {
+    console.log('sample 2 handleCountChange:', count);
   }
 }
