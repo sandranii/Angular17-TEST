@@ -4,7 +4,8 @@ import { Sample3Component } from './sample-3.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TaiwanStockInfoViewModel } from '../../../interfaces';
 import { StocksService } from '../../services/stocks.service';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
+import { findComponent } from '../../../spec-helpers/element.spec-helper';
 
 describe('Sample3Component', () => {
   let component: Sample3Component;
@@ -81,5 +82,103 @@ describe('Sample3Component', () => {
     expect(spy()).toEqual((fakeStockPERData));
     // 檢查 getTaiwanStockPER 是否被調用
     expect(spy).toHaveBeenCalled();
+  })
+});
+
+fdescribe('Sample3Component: unit test (偽造服務依賴)', () => {
+  let fixture: ComponentFixture<Sample3Component>;
+  let fakeStocksService: StocksService;
+
+  const fakeStockInfoData: TaiwanStockInfoViewModel[] = [{
+    industry_category: "ETF",
+    stock_id: "0050",
+    stock_name: "元大台灣50",
+    type: "twse"
+  }];
+
+  beforeEach(async () => {
+    // 建立假的service
+    fakeStocksService = jasmine.createSpyObj('StocksService', {
+      getTaiwanStockInfo: of(fakeStockInfoData),
+      getTaiwanStockPER: undefined //若沒寫會報錯
+    })
+
+    await TestBed.configureTestingModule({
+      imports: [Sample3Component],
+      // 用假的service 取代原本的
+      providers: [{ provide: StocksService, useValue: fakeStocksService }],
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(Sample3Component);
+    fixture.detectChanges();
+  });
+
+  it('檢查fakeStocksService 裡的API是否被調用', () => {    
+    // 檢查 getTaiwanStockInfo 是否被調用
+    expect(fakeStocksService.getTaiwanStockInfo).toHaveBeenCalled();
+    expect(fakeStocksService.getTaiwanStockPER).toHaveBeenCalled();
+  })
+
+});
+
+fdescribe('Sample3Component: unit test with minimal Service logic', () => {
+  const fakeStockInfoData: TaiwanStockInfoViewModel[] = [{
+    industry_category: "ETF",
+    stock_id: "0050",
+    stock_name: "元大台灣50",
+    type: "twse"
+  }];
+  let component: Sample3Component;
+  let fixture: ComponentFixture<Sample3Component>;
+  
+  let fakeStockInfoData$: BehaviorSubject<TaiwanStockInfoViewModel[]>
+  // fakeStocksService 需要有 StocksService 中所有定義的屬性和方法，因為 keyof StocksService 代表選取了所有的鍵。
+  // let fakeStocksService: Pick<StocksService, keyof StocksService>; 
+  let fakeStocksService: Partial<StocksService>;
+
+  beforeEach(async () => {
+    // 確保在初始化時提供正確的interface
+    fakeStockInfoData$ = new BehaviorSubject<TaiwanStockInfoViewModel[]>(fakeStockInfoData);
+    // 建立假的service
+    fakeStocksService = {
+      getTaiwanStockInfo() {
+        return fakeStockInfoData$
+      },
+      getTaiwanStockPER() {
+        return fakeStockInfoData$
+      } //若沒寫 getTaiwanStockPER 會報錯
+    };
+
+    // 加上 as StocksService
+    spyOn(fakeStocksService as StocksService, 'getTaiwanStockInfo').and.callThrough();
+    spyOn(fakeStocksService as StocksService, 'getTaiwanStockPER').and.callThrough();
+
+    await TestBed.configureTestingModule({
+      imports: [Sample3Component],
+      // 用假的service 取代原本的
+      providers: [{ provide: StocksService, useValue: fakeStocksService }],
+    })
+    .compileComponents();
+    
+    fixture = TestBed.createComponent(Sample3Component);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('檢查fakeStocksService 裡的API "getTaiwanStockInfo" 是否被調用', () => {    
+    // 檢查 getTaiwanStockInfo 是否被調用
+    expect(fakeStocksService.getTaiwanStockInfo).toHaveBeenCalled();
+  })
+
+
+  it('檢查 getTaiwanStockInfo後畫面上渲染的內容', () => {    
+    // 檢查 getTaiwanStockInfo 是否被調用
+    const stockInfoDebugElement = findComponent(fixture, '.stockInfo');
+    const stockInfoNativeElement: HTMLElement = stockInfoDebugElement.nativeElement;
+    // console.log('stockInfoDebugElement', stockInfoDebugElement);
+    // console.log('stockInfoNativeElement', stockInfoNativeElement);
+    // console.log('stockInfoNativeElement.textContent', stockInfoNativeElement.textContent);
+    expect(stockInfoNativeElement.textContent).toContain('元大台灣50'); // {{ stockInfo$ | async | json }} 會將 stockInfo$ BehaviorSubject 中的最新值（一個物件）轉換為 JSON 格式的字串
   })
 });
