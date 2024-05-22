@@ -22,7 +22,7 @@ export class Sample3Component {
   ngOnInit(): void {
     this.stockInfo$ = this.#stocksService.getTaiwanStockInfo();
     // this.stockPriceMinuteBidAsk$  = this.#stocksService.getTaiwanStockPriceMinuteBidAsk();
-    this.stockPER$ = this.#stocksService.getTaiwanStockPER();
+    // this.stockPER$ = this.#stocksService.getTaiwanStockPER();
   }
   
 }

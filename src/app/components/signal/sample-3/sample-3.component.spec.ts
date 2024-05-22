@@ -85,7 +85,7 @@ describe('Sample3Component', () => {
   })
 });
 
-fdescribe('Sample3Component: unit test (偽造服務依賴)', () => {
+describe('Sample3Component: unit test (偽造服務依賴)', () => {
   let fixture: ComponentFixture<Sample3Component>;
   let fakeStocksService: StocksService;
 
@@ -126,7 +126,7 @@ fdescribe('Sample3Component: unit test with minimal Service logic', () => {
   const fakeStockInfoData: TaiwanStockInfoViewModel[] = [{
     industry_category: "ETF",
     stock_id: "0050",
-    stock_name: "元大台灣50",
+    stock_name: "元大台灣501",
     type: "twse"
   }];
   let component: Sample3Component;
@@ -134,8 +134,8 @@ fdescribe('Sample3Component: unit test with minimal Service logic', () => {
   
   let fakeStockInfoData$: BehaviorSubject<TaiwanStockInfoViewModel[]>
   // fakeStocksService 需要有 StocksService 中所有定義的屬性和方法，因為 keyof StocksService 代表選取了所有的鍵。
-  // let fakeStocksService: Pick<StocksService, keyof StocksService>; 
-  let fakeStocksService: Partial<StocksService>;
+  let fakeStocksService: Pick<StocksService, 'getTaiwanStockInfo'>; 
+  // let fakeStocksService: Partial<StocksService>;
 
   beforeEach(async () => {
     // 確保在初始化時提供正確的interface
@@ -145,14 +145,14 @@ fdescribe('Sample3Component: unit test with minimal Service logic', () => {
       getTaiwanStockInfo() {
         return fakeStockInfoData$
       },
-      getTaiwanStockPER() {
-        return fakeStockInfoData$
-      } //若沒寫 getTaiwanStockPER 會報錯
+      // getTaiwanStockPER() {
+      //   return fakeStockInfoData$
+      // } //若 component ngOninit 沒使用此funcion 就不用寫
     };
 
     // 加上 as StocksService
     spyOn(fakeStocksService as StocksService, 'getTaiwanStockInfo').and.callThrough();
-    spyOn(fakeStocksService as StocksService, 'getTaiwanStockPER').and.callThrough();
+    // spyOn(fakeStocksService as StocksService, 'getTaiwanStockPER').and.callThrough();
 
     await TestBed.configureTestingModule({
       imports: [Sample3Component],
@@ -179,6 +179,6 @@ fdescribe('Sample3Component: unit test with minimal Service logic', () => {
     // console.log('stockInfoDebugElement', stockInfoDebugElement);
     // console.log('stockInfoNativeElement', stockInfoNativeElement);
     // console.log('stockInfoNativeElement.textContent', stockInfoNativeElement.textContent);
-    expect(stockInfoNativeElement.textContent).toContain('元大台灣50'); // {{ stockInfo$ | async | json }} 會將 stockInfo$ BehaviorSubject 中的最新值（一個物件）轉換為 JSON 格式的字串
+    expect(stockInfoNativeElement.textContent).toContain('元大台灣501'); // {{ stockInfo$ | async | json }} 會將 stockInfo$ BehaviorSubject 中的最新值（一個物件）轉換為 JSON 格式的字串
   })
 });
