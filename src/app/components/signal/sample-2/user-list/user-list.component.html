@@ -1,4 +1,4 @@
-<input (input)="updateQuery($event)" placeholder="Start typing..." />
+<input data-testId="search-term-input" (input)="updateQuery($event)" placeholder="Start typing..." />
 <ul>
   @for (user of filteredUsers(); track user.id) {
   <li>{{ user.displayName }}</li>
