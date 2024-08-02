@@ -2,7 +2,7 @@ import { Sample2Component } from './sample-2.component';
 import { Spectator, byTestId, createComponentFactory } from '@ngneat/spectator';
 import { UserListComponent } from './user-list/user-list.component';
 import { Sample1Component } from '../sample-1/sample-1.component';
-import { MockComponent } from 'ng-mocks';
+import { MockComponents } from 'ng-mocks';
 import { User } from '../../../interfaces';
 
 describe('Sample2Component with spectator', () => {
@@ -15,8 +15,7 @@ describe('Sample2Component with spectator', () => {
     component: Sample2Component,
     shallow: true,
     declarations: [
-      MockComponent(UserListComponent),
-      MockComponent(Sample1Component)
+      MockComponents(UserListComponent,Sample1Component)
     ]
   })
 
