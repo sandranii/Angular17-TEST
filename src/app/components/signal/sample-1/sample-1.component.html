@@ -1,7 +1,8 @@
 <h1>Signal 練習 - count</h1>
+<h2>{{ limitMessage }}</h2>
 <p data-testid="count">count: {{ count() }}</p>
 <p>double: {{ double() }}</p>
-<button data-testid="increase-button" (click)="increase()">+</button>
+<button data-testid="increase-button" [disabled]="disabled()" (click)="increase()">+</button>
 <button (click)="reset()">reset</button>
 <!-- testCount: 單獨測試＠Input使用，跟計數器無關 -->
 <p data-testid="testCount">{{ testCount }}</p>
